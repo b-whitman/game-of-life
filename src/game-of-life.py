@@ -8,8 +8,8 @@ width = 15
 height = 15
 margin = 3
 
-rows = 20
-columns = 20
+rows = 50
+columns = 50
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(((width + margin) * rows, 
                                 (height + margin) * columns))

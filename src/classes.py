@@ -10,17 +10,25 @@ class Grid():
         self.clickable = 1
 
     def resolve(self):
-        new_grid = Grid(self.xdim, self.ydim)
+
+        new_grid = [[0 for x in range(self.ydim)] for y in range(self.xdim)]
+
         for x in range(self.xdim):
             for y in range(self.ydim):
-                if self.cells[x][y] == 1:
-                    if self.neighbors(x, y) < 2:
-                        new_grid.cells[x][y] = 0
-                    elif self.neighbors(x, y) > 3:
-                        new_grid.cells[x][y] = 1
-                elif self.cells[x][y] == 0 and self.neighbors(x, y) == 3:
-                    new_grid.cells[x][y] == 1
-        
+                neighbors = self.neighbors(x, y)
+                is_alive = self.cells[x][y]
+
+                if is_alive == 1:
+                    if neighbors < 2:
+                        new_grid[x][y] = 0
+                    elif 2 <= neighbors <= 3:
+                        new_grid[x][y] = 1
+                    elif neighbors > 3:
+                        new_grid[x][y] = 0
+
+                elif (is_alive == 0) and (neighbors == 3):
+                    new_grid[x][y] = 1
+                    
         return new_grid
 
     def neighbors(self, row, column):
@@ -32,15 +40,17 @@ class Grid():
         if column == self.xdim-1:
             column = -1
             
-        total = sum([self.cells[row-1][column-1],
-                    self.cells[row][column-1],
+        total = sum([
+                    self.cells[row-1][column-1],
                     self.cells[row-1][column],
+                    self.cells[row-1][column+1],
                     self.cells[row+1][column-1],
                     self.cells[row+1][column],
                     self.cells[row+1][column+1],
-                    self.cells[row][column+1],
-                    self.cells[row-1][column+1]])
-
+                    self.cells[row][column-1],
+                    self.cells[row][column+1]
+                    ])
+                    
         return total
 
     
@@ -49,4 +59,4 @@ if __name__ == "__main__":
     x = 2
     y = 4
     grid.cells[y-1][x-1] = not grid.cells[y-1][x-1]
-    grid.resolve()
+    print(grid.resolve())
