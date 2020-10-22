@@ -25,6 +25,21 @@ def to_grid(n):
     # Convert pixels to grid coordinates
     return (n - margin) // (width + margin) + 1
 
+def draw(grid):
+    for row in range(rows):
+        for column in range(columns): 
+            color = white
+            if grid.cells[row][column] == 1:
+                color = blue   
+            pygame.draw.rect(screen, 
+                            color, 
+                            [(margin + width) * column + margin,
+                            (margin + height) * row + margin,
+                            width,
+                            height])
+
+    pygame.display.update()
+
 while (True):
     for event in pygame.event.get():
         # TODO: Keyboard controls
@@ -42,20 +57,14 @@ while (True):
             grid.cells[y-1][x-1] = not grid.cells[y-1][x-1]
         elif event.type == pygame.KEYDOWN:
             grid.cells = grid.resolve()
-        
 
-    for row in range(rows):
-        for column in range(columns): 
-            color = white
-            if grid.cells[row][column] == 1:
-                color = blue   
-            pygame.draw.rect(screen, 
-                            color, 
-                            [(margin + width) * column + margin,
-                            (margin + height) * row + margin,
-                            width,
-                            height])
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_UP]:
+        grid.cells = grid.resolve()
+        draw(grid)
+        continue
 
-    pygame.display.update()
+    draw(grid)
+
 
 pygame.quit()
