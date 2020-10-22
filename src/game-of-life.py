@@ -1,6 +1,6 @@
 import pygame
 import sys
-from classes import Grid
+from classes import Grid, Button
 
 pygame.init()
 
@@ -14,12 +14,13 @@ clock = pygame.time.Clock()
 screen = pygame.display.set_mode(((width + margin) * rows, 
                                 (height + margin) * columns))
 
-red = (255,0,0)
+green = (0,255,0)
 blue = (0,0,255)
 black = 0, 0, 0
 white = 255, 255, 255
 
 grid = Grid(rows, columns)
+green_button = Button(green, 150, 225, 250, 100, 'click me')
 
 def to_grid(n):
     # Convert pixels to grid coordinates
@@ -37,14 +38,17 @@ def draw(grid):
                             (margin + height) * row + margin,
                             width,
                             height])
+    green_button.draw(screen)
 
     pygame.display.update()
 
-while (True):
+run = True
+while run:
     for event in pygame.event.get():
         # TODO: Keyboard controls
         # Define controls from buttons on screen? Will those show up as events?
         if event.type == pygame.QUIT:
+            run = False
             pygame.quit(); sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             # TODO: Smooth selection while holding down mouse button
