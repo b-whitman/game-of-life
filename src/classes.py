@@ -1,22 +1,33 @@
 import pygame
 
+green = (0,255,0)
+blue = (0,0,255)
+black = 0, 0, 0
+white = 255, 255, 255
+
+
+
 class Grid():
-    # Methods: resolve()
 
-    def __init__(self, rows, columns):
+    def __init__(self, rows, columns, width, height, margin):
+        self.width = width
+        self.height = height
+        self.margin = margin
+        self.rows = rows
+        self.columns = columns
+        self.shape_dict = {'glider': [[1,1,1],[0,0,1],[0,1,0]]}
 
-        self.xdim = rows
-        self.ydim = columns
+        self.gen_num = 0
         
         self.cells = [[0 for x in range(columns)] for y in range(rows)]
         self.clickable = 1
 
     def resolve(self):
 
-        new_grid = [[0 for x in range(self.ydim)] for y in range(self.xdim)]
+        new_grid = [[0 for x in range(self.rows)] for y in range(self.columns)]
 
-        for x in range(self.xdim):
-            for y in range(self.ydim):
+        for x in range(self.columns):
+            for y in range(self.rows):
                 neighbors = self.neighbors(x, y)
                 is_alive = self.cells[x][y]
 
@@ -30,16 +41,17 @@ class Grid():
 
                 elif (is_alive == 0) and (neighbors == 3):
                     new_grid[x][y] = 1
-                    
+        
+        self.gen_num += 1            
         return new_grid
 
     def neighbors(self, row, column):
         # Count up live cells in adjacent and diagonal
         # Return total
         # TODO: Try modifying this to close wrap-around on borders
-        if row == self.ydim-1:
+        if row == self.rows-1:
             row = -1
-        if column == self.xdim-1:
+        if column == self.columns-1:
             column = -1
             
         total = sum([
@@ -54,6 +66,9 @@ class Grid():
                     ])
                     
         return total
+    
+    def paste_shape(self, shape, origin):
+        # 
 
 class Button():
     def __init__(self, color, x,y,width,height,text=''):
@@ -71,7 +86,7 @@ class Button():
         0)
 
         if self.text != '':
-            font = pygame.font.SysFont('Corbel',35)
+            font = pygame.font.SysFont('Corbel',20)
             text = font.render(self.text, 1, (0,0,0))
             win.blit(text, 
                     (self.x + (self.width/2 - text.get_width()/2), 

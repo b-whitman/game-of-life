@@ -7,20 +7,25 @@ pygame.init()
 width = 15
 height = 15
 margin = 3
-
 rows = 50
 columns = 50
+menu_x = 150
+
 clock = pygame.time.Clock()
-screen = pygame.display.set_mode(((width + margin) * rows, 
+screen = pygame.display.set_mode(((width + margin) * rows + menu_x, 
                                 (height + margin) * columns))
+
+font = pygame.font.SysFont('Corbel',20)
 
 green = (0,255,0)
 blue = (0,0,255)
 black = 0, 0, 0
 white = 255, 255, 255
 
-grid = Grid(rows, columns)
-green_button = Button(green, 150, 225, 250, 100, 'click me')
+grid = Grid(50, 50, 15, 15, 3)
+play_button = Button(green, 900, 25, 150, 50, 'Play/Pause')
+glider_button = Button(white, 900, 850, 50, 50, 'Glider')
+
 
 def to_grid(n):
     # Convert pixels to grid coordinates
@@ -38,9 +43,21 @@ def draw(grid):
                             (margin + height) * row + margin,
                             width,
                             height])
-    green_button.draw(screen)
+                            
+    play_button.draw(screen)
+    glider_button.draw(screen)
 
+    gen_num = font.render(str(grid.gen_num), True, black, white)
+    screen.blit(gen_num, (950, 850))
+
+    clock.tick(30)
     pygame.display.update()
+
+def menu(x, y):
+    if play_button.y < y < play_button.y+play_button.height:
+        print("Play")
+    if glider_button.y < y < glider_button.y+glider_button.height and glider_button.x < x < glider_button.x + glider_button.width:
+        print("Glider")
 
 run = True
 while run:
@@ -55,10 +72,13 @@ while run:
             # Use a while loop and keep track of which cells have been toggled
             # Make it smart like picross
             x, y = pygame.mouse.get_pos()
-            x = to_grid(x)
-            y = to_grid(y)
-            print(f"Click: {x}, {y}")
-            grid.cells[y-1][x-1] = not grid.cells[y-1][x-1]
+            if x > 900:
+                menu(x, y)
+            else:    
+                x = to_grid(x)
+                y = to_grid(y)
+                print(f"Click: {x}, {y}")
+                grid.cells[y-1][x-1] = not grid.cells[y-1][x-1]
         elif event.type == pygame.KEYDOWN:
             grid.cells = grid.resolve()
 
@@ -67,7 +87,7 @@ while run:
         grid.cells = grid.resolve()
         draw(grid)
         continue
-
+        
     draw(grid)
 
 
