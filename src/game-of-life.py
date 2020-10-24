@@ -1,4 +1,5 @@
 import pygame
+import pygame_textinput
 import sys
 from classes import Grid, Button
 
@@ -14,6 +15,7 @@ menu_x = 150
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(((width + margin) * rows + menu_x, 
                                 (height + margin) * columns))
+textinput = pygame_textinput.TextInput(initial_string="Jump to generation... (INT)",text_color = (0,200,0))
 
 font = pygame.font.SysFont('Corbel',20)
 
@@ -78,7 +80,8 @@ def menu(x, y):
 
 run = True
 while run:
-    for event in pygame.event.get():
+    events = pygame.event.get()
+    for event in events:
         # TODO: Keyboard controls
         # Define controls from buttons on screen? Will those show up as events?
         if event.type == pygame.QUIT:
@@ -101,6 +104,9 @@ while run:
                     continue
         elif event.type == pygame.KEYDOWN:
             grid.cells = grid.resolve()
+    
+    textinput.update(events)
+    screen.blit(textinput.get_surface(), (900, 250))
 
     if grid.paused == False:
         grid.cells = grid.resolve()
