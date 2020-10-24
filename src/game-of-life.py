@@ -26,6 +26,7 @@ grid = Grid(50, 50, 15, 15, 3)
 play_button = Button(green, 900, 25, 150, 50, 'Play/Pause')
 glider_button = Button(white, 900, 850, 50, 50, 'Glider')
 clear_button = Button(green, 900, 100, 150, 50, 'Clear')
+rand_button = Button(green, 900, 175, 150, 50, 'Random Grid')
 
 
 
@@ -49,6 +50,7 @@ def draw(grid):
     play_button.draw(screen)
     clear_button.draw(screen)
     glider_button.draw(screen)
+    rand_button.draw(screen)
 
     gen_num = font.render(str(grid.gen_num), True, black, white)
     screen.blit(gen_num, (950, 850))
@@ -69,6 +71,8 @@ def menu(x, y):
     if clear_button.y < y < clear_button.y+clear_button.height:
         grid.reset_cells()
         screen.fill(black)
+    if rand_button.y < y < rand_button.y+rand_button.height:
+        grid.fill_random()
     if glider_button.y < y < glider_button.y+glider_button.height and glider_button.x < x < glider_button.x + glider_button.width:
         print("Glider")
 

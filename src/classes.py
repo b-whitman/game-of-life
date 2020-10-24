@@ -1,4 +1,5 @@
 import pygame
+import random
 
 green = (0,255,0)
 blue = (0,0,255)
@@ -71,6 +72,10 @@ class Grid():
                         for y in range(self.rows)]
         self.gen_num = 0
         self.paused = 1
+
+    def fill_random(self):
+        self.cells = [[random.randint(0,1) for x in range(self.columns)] 
+                        for y in range(self.rows)]
     
     # def paste_shape(self, shape, origin):
     #     # 
