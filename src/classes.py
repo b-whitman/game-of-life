@@ -45,6 +45,9 @@ class Grid():
         self.gen_num += 1            
         return new_grid
 
+    def autoplay(self):
+        pass
+
     def neighbors(self, row, column):
         # Count up live cells in adjacent and diagonal
         # Return total
@@ -67,8 +70,8 @@ class Grid():
                     
         return total
     
-    def paste_shape(self, shape, origin):
-        # 
+    # def paste_shape(self, shape, origin):
+    #     # 
 
 class Button():
     def __init__(self, color, x,y,width,height,text=''):

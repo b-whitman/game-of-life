@@ -54,8 +54,14 @@ def draw(grid):
     pygame.display.update()
 
 def menu(x, y):
+    # This should probably be a class instead of a function
     if play_button.y < y < play_button.y+play_button.height:
-        print("Play")
+        if grid.clickable == True:
+            print("Pause")
+            grid.clickable = False
+        else:
+            print("Play")
+            grid.clickable = True
     if glider_button.y < y < glider_button.y+glider_button.height and glider_button.x < x < glider_button.x + glider_button.width:
         print("Glider")
 
@@ -78,7 +84,10 @@ while run:
                 x = to_grid(x)
                 y = to_grid(y)
                 print(f"Click: {x}, {y}")
-                grid.cells[y-1][x-1] = not grid.cells[y-1][x-1]
+                if grid.clickable == True:
+                    grid.cells[y-1][x-1] = not grid.cells[y-1][x-1]
+                else:
+                    continue
         elif event.type == pygame.KEYDOWN:
             grid.cells = grid.resolve()
 
