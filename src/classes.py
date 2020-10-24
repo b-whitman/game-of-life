@@ -5,7 +5,7 @@ blue = (0,0,255)
 black = 0, 0, 0
 white = 255, 255, 255
 
-
+clock = pygame.time.Clock()
 
 class Grid():
 
@@ -17,10 +17,7 @@ class Grid():
         self.columns = columns
         self.shape_dict = {'glider': [[1,1,1],[0,0,1],[0,1,0]]}
 
-        self.gen_num = 0
-        
-        self.cells = [[0 for x in range(columns)] for y in range(rows)]
-        self.clickable = 1
+        self.reset_cells()
 
     def resolve(self):
 
@@ -42,11 +39,10 @@ class Grid():
                 elif (is_alive == 0) and (neighbors == 3):
                     new_grid[x][y] = 1
         
+        clock.tick(15)
         self.gen_num += 1            
         return new_grid
 
-    def autoplay(self):
-        pass
 
     def neighbors(self, row, column):
         # Count up live cells in adjacent and diagonal
@@ -69,6 +65,12 @@ class Grid():
                     ])
                     
         return total
+
+    def reset_cells(self):
+        self.cells = [[0 for x in range(self.columns)] 
+                        for y in range(self.rows)]
+        self.gen_num = 0
+        self.paused = 1
     
     # def paste_shape(self, shape, origin):
     #     # 

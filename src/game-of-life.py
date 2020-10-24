@@ -25,6 +25,8 @@ white = 255, 255, 255
 grid = Grid(50, 50, 15, 15, 3)
 play_button = Button(green, 900, 25, 150, 50, 'Play/Pause')
 glider_button = Button(white, 900, 850, 50, 50, 'Glider')
+clear_button = Button(green, 900, 100, 150, 50, 'Clear')
+
 
 
 def to_grid(n):
@@ -45,23 +47,28 @@ def draw(grid):
                             height])
                             
     play_button.draw(screen)
+    clear_button.draw(screen)
     glider_button.draw(screen)
 
     gen_num = font.render(str(grid.gen_num), True, black, white)
     screen.blit(gen_num, (950, 850))
 
     clock.tick(30)
+    pygame.display.flip()
     pygame.display.update()
 
 def menu(x, y):
     # TODO: This should probably be a class instead of a function
     if play_button.y < y < play_button.y+play_button.height:
-        if grid.clickable == True:
+        if grid.paused == True:
             print("Pause")
-            grid.clickable = False
+            grid.paused = False
         else:
             print("Play")
-            grid.clickable = True
+            grid.paused = True
+    if clear_button.y < y < clear_button.y+clear_button.height:
+        grid.reset_cells()
+        screen.fill(black)
     if glider_button.y < y < glider_button.y+glider_button.height and glider_button.x < x < glider_button.x + glider_button.width:
         print("Glider")
 
@@ -84,14 +91,14 @@ while run:
                 x = to_grid(x)
                 y = to_grid(y)
                 print(f"Click: {x}, {y}")
-                if grid.clickable == True:
+                if grid.paused == True:
                     grid.cells[y-1][x-1] = not grid.cells[y-1][x-1]
                 else:
                     continue
         elif event.type == pygame.KEYDOWN:
             grid.cells = grid.resolve()
 
-    if grid.clickable == False:
+    if grid.paused == False:
         grid.cells = grid.resolve()
         draw(grid)
         continue
