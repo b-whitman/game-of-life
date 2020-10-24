@@ -54,7 +54,7 @@ def draw(grid):
     pygame.display.update()
 
 def menu(x, y):
-    # This should probably be a class instead of a function
+    # TODO: This should probably be a class instead of a function
     if play_button.y < y < play_button.y+play_button.height:
         if grid.clickable == True:
             print("Pause")
@@ -91,8 +91,7 @@ while run:
         elif event.type == pygame.KEYDOWN:
             grid.cells = grid.resolve()
 
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_UP]:
+    if grid.clickable == False:
         grid.cells = grid.resolve()
         draw(grid)
         continue
