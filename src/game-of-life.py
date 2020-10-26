@@ -29,6 +29,7 @@ play_button = Button(green, 900, 25, 150, 50, 'Play/Pause')
 glider_button = Button(white, 900, 850, 50, 50, 'Glider')
 clear_button = Button(green, 900, 100, 150, 50, 'Clear')
 rand_button = Button(green, 900, 175, 150, 50, 'Random Grid')
+speed_button = Button(green, 900, 250, 150, 50, 'Toggle Speed')
 
 
 
@@ -53,6 +54,7 @@ def draw(grid):
     clear_button.draw(screen)
     glider_button.draw(screen)
     rand_button.draw(screen)
+    speed_button.draw(screen)
 
     gen_num = font.render(str(grid.gen_num), True, black, white)
     screen.blit(gen_num, (950, 850))
@@ -75,6 +77,8 @@ def menu(x, y):
         screen.fill(black)
     if rand_button.y < y < rand_button.y+rand_button.height:
         grid.fill_random()
+    if speed_button.y < y < speed_button.y+speed_button.height:
+        grid.toggle_speed()
     if glider_button.y < y < glider_button.y+glider_button.height and glider_button.x < x < glider_button.x + glider_button.width:
         print("Glider")
 
@@ -104,9 +108,6 @@ while run:
                     continue
         elif event.type == pygame.KEYDOWN:
             grid.cells = grid.resolve()
-    
-    textinput.update(events)
-    screen.blit(textinput.get_surface(), (900, 250))
 
     if grid.paused == False:
         grid.cells = grid.resolve()

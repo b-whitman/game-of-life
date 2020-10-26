@@ -16,6 +16,7 @@ class Grid():
         self.margin = margin
         self.rows = rows
         self.columns = columns
+        self.speed = 1
         self.shape_dict = {'glider': [[1,1,1],[0,0,1],[0,1,0]]}
 
         self.reset_cells()
@@ -40,7 +41,7 @@ class Grid():
                 elif (is_alive == 0) and (neighbors == 3):
                     new_grid[x][y] = 1
         
-        clock.tick(15)
+        clock.tick(self.speed)
         self.gen_num += 1            
         return new_grid
 
@@ -76,6 +77,14 @@ class Grid():
     def fill_random(self):
         self.cells = [[random.randint(0,1) for x in range(self.columns)] 
                         for y in range(self.rows)]
+
+    def toggle_speed(self):
+        print("Toggling speed...")
+        if self.speed < 60:
+            self.speed += 5
+        else:
+            self.speed = 1
+        print(self.speed)
     
     # def paste_shape(self, shape, origin):
     #     # 
